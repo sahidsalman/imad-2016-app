@@ -19,4 +19,9 @@ body {
 .img-medium {
     height: 200px;
 }
-
+ .cont {
+                max-width:800px;
+                color:blue;
+                font-family:sans-serif;
+                margin:0 auto;
+            }
