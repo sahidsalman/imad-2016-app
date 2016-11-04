@@ -1,0 +1,272 @@
+#include<iostream>
+#include<cstdlib>
+#include<queue>
+#include<cmath>
+using namespace std;
+class node
+{
+	public:
+
+		int data;
+		node *left;
+		node *right;
+};
+class tree : public node
+{
+	public:
+		int n,value,l,a;
+		node *root;
+  			tree()		// constructor of tree for intialising the values
+			{
+                cout<<"\nEnter the no of levels : ";
+                cin>>l;
+				int q=0;
+				node *p=new node;
+				root=p;
+				queue<node*> Q;
+				Q.push(p);
+				while(!Q.empty())
+				{
+					if(q<(pow(2,l)-1))
+					{
+							node *current;
+							current = Q.front();
+							Q.pop();
+							cout<<"\nEnter the key for node "<<q+1<<" : ";
+							cin>>a;
+							current->data=a;
+							q++;
+							if(q<pow(2,l-1))
+							{
+								node *a=new node;  a->left=a->right=NULL; current->left=a;
+								node *b=new node;  b->left=b->right=NULL; current->right=b;
+								Q.push(current->left);
+								Q.push(current->right);
+							}
+
+					}
+					else
+					{
+						break;
+					}
+
+				}
+			}
+
+		void pretrvsal()
+			{
+				preorder(root);
+			}
+
+		void preorder(node *root)
+			{
+				if(root==NULL)
+				{
+					return ;
+				}
+
+				cout<<" "<<root->data<<" ";
+				preorder(root->left);
+				preorder(root->right);
+
+			}
+
+		void posttrvsal()
+			{
+				postorder(root);
+			}
+
+		void postorder(node *root)
+			{
+				if(root==NULL)
+				{
+					return ;
+				}
+
+				postorder(root->left);
+				postorder(root->right);
+				cout<<" "<<root->data<<" ";
+
+			}
+
+		void intrvsal()
+			{
+				inorder(root);
+			}
+
+		void inorder(node *root)
+			{
+				if(root==NULL)
+				{
+					return ;
+				}
+
+				inorder(root->left);
+				cout<<" "<<root->data<<" ";
+				inorder(root->right);
+
+			}
+
+			void levelorder()
+			{
+				if(root == NULL)
+				return;
+
+				queue<node*> Q;
+				Q.push(root);
+				while(!Q.empty())
+				{
+					node* current = Q.front();
+					Q.pop(); 					// removing the element at front
+					cout<<" "<<current->data<<" ";
+					if(current->left != NULL) Q.push(current->left);
+					if(current->right != NULL) Q.push(current->right);
+				}
+			}
+
+			void findkeysatlevel()
+			{
+				cout<<"enter the level : ";
+				cin>>n;
+				int a=1;
+				if(root == NULL)
+				return;
+
+				queue<node*> Q;
+				Q.push(root);
+				while(!Q.empty())
+				{
+					node* current = Q.front();
+					Q.pop();
+					if(a>=pow(2,n) && a<pow(2,n+1))				// removing the element at front
+					cout<<" "<<current->data<<" ";a++;
+					if(current->left != NULL) Q.push(current->left);
+					if(current->right != NULL) Q.push(current->right);
+				}
+			}
+
+
+			void findnodeatkey()
+			{
+				cout<<"enter the key : ";
+				cin>>n;
+				int a=1;
+				if(root == NULL)
+				return;
+
+				queue<node*> Q;
+				Q.push(root);
+				while(!Q.empty())
+				{
+					node* current = Q.front();
+					Q.pop();
+					if(n==current->data)				// removing the element at front
+					cout<<"the key is found at node : "<<a; 	a++;
+					if(current->left != NULL) Q.push(current->left);
+					if(current->right != NULL) Q.push(current->right);
+				}
+			}
+};
+
+int main()
+{
+	int choice,a;
+
+        tree tr;
+
+        while (1)
+
+        {
+
+            cout<<endl<<"\tBINARY TREE"<<endl;
+
+            cout<<"1.preorder"<<endl;
+
+            cout<<"2.postorder"<<endl;
+
+            cout<<"3.inorder"<<endl;
+
+            cout<<"4.levelorder"<<endl;
+
+            cout<<"5.keys at level"<<endl;
+
+            cout<<"6.find node at key"<<endl;
+
+            cout<<"7.Exit "<<endl;
+
+            cout<<"\nEnter your choice : ";
+
+            cin>>choice;
+
+            switch(choice)
+
+            {
+
+            case 1:
+
+
+                tr.pretrvsal();
+
+                cout<<endl;
+
+                break;
+
+            case 2:
+
+
+                tr.posttrvsal();
+
+                cout<<endl;
+
+                break;
+
+            case 3:
+
+
+                tr.intrvsal();
+
+                cout<<endl;
+
+                break;
+
+	    case 4:
+
+
+		tr.levelorder();
+
+                cout<<endl;
+
+                break;
+
+	    case 5:
+
+
+                tr.findkeysatlevel();
+
+                cout<<endl;
+
+                break;
+
+
+	    case 6:
+
+
+                tr.findnodeatkey();
+
+                cout<<endl;
+
+                break;
+
+	    case 7:
+
+		exit(0);
+
+	    default:
+
+             	break;
+		}
+	}
+
+return 0;
+}
+
