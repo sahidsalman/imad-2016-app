@@ -1,0 +1,439 @@
+ //C++ Program to Implement Singly Linked List. This is a program for using stack using linked list. 
+ #include<iostream>
+ #include<cstdio>
+ #include<cstdlib>
+ using namespace std;
+
+ class node                      //class called node which features as a node
+{
+ public:
+    int info;                    
+    node *next;               /* A node element and a pointer to next node.This is a singly linked list*/
+
+}*start;                         //Pointer start pointing to a node
+
+class single_llist               //Class specifying various functions for the different operations in linked list
+{
+public:
+    node* create_node(int);
+    void insert_begin();
+    void insert_pos();
+    void insert_last();       
+    void delete_pos();
+    void sort();
+    void search();
+    void update();
+    void reverse();
+    void display();
+
+    single_llist()           //Constructor
+    {
+        start = NULL;        //The start pointerwill point to a null pointer by default whenever an objectof this class is created.
+    }                           
+};
+
+int main()
+{
+    int choice, nodes, element, position, i;
+    single_llist sl;      //Object of the single_llist class, start = NULL 
+    
+    while (1) //endless loop showing various operations to be chosen by the user
+    {
+        cout<<endl<<"---------------------------------"<<endl;    
+        cout<<endl<<"Operations on singly linked list"<<endl;
+        cout<<endl<<"---------------------------------"<<endl;
+        cout<<"1.Insert Node at beginning"<<endl;
+        cout<<"2.Insert node at last"<<endl;
+        cout<<"3.Insert node at position"<<endl;
+        cout<<"4.Sort Link List"<<endl;
+        cout<<"5.Delete a Particular Node"<<endl;
+        cout<<"6.Update Node Value"<<endl;
+        cout<<"7.Search Element"<<endl;
+        cout<<"8.Display Linked List"<<endl;
+        cout<<"9.Reverse Linked List "<<endl;
+        cout<<"10.Exit "<<endl;
+
+        cout<<"Enter your choice : ";
+        cin>>choice;
+
+        switch(choice) /*For each case we use a function of the  single_llist class which we will define later*/
+        {
+        case 1:
+            cout<<"Inserting Node at Beginning: "<<endl;    
+            sl.insert_begin();                              
+            cout<<endl;                                     
+            break;                                               
+                                                        
+        case 2:
+            cout<<"Inserting Node at Last: "<<endl;        
+            sl.insert_last();                              
+            cout<<endl;                                    
+            break;
+
+        case 3:
+            cout<<"Inserting Node at a given position:"<<endl;
+            sl.insert_pos();
+            cout<<endl;
+            break;
+
+        case 4:
+            cout<<"Sort Link List: "<<endl;
+            sl.sort();
+            cout<<endl;
+            break;
+
+        case 5:
+            cout<<"Delete a particular node: "<<endl;
+            sl.delete_pos();
+            cout<<endl;
+            break;
+
+        case 6:
+            cout<<"Update Node Value:"<<endl;  
+            sl.update();
+            cout<<endl;
+            break;
+
+        case 7:
+            cout<<"Search element in Link List: "<<endl;
+            sl.search();
+            cout<<endl;
+            break;
+
+        case 8:
+            cout<<"Display elements of link list"<<endl;
+            sl.display();
+            cout<<endl;
+            break;
+
+        case 9:
+            cout<<"Reverse elements of Link List"<<endl;
+            sl.reverse();
+            cout<<endl;
+            break;
+
+        case 10:
+            cout<<"Exiting..."<<endl;
+            exit(1);
+            break;  
+
+        default:
+            cout<<"Wrong choice"<<endl;
+
+        }     
+    }          
+}             
+
+node *single_llist::create_node(int value)     // for creating new node      
+{                                                    
+   node *temp, *s;
+   temp = new node;        /*the new command allocates the memory to the pointer called temp*/
+
+    if (temp == NULL)      
+    {
+        cout<<"Memory not allocated "<<endl;  // failure inn creating new node
+        return 0;
+    }
+
+    else
+    {
+        temp->info = value;
+        temp->next = NULL;     
+        return temp;               //returning the pointer to the newly created node
+    }
+}
+
+
+
+ void single_llist::insert_begin()  //for inserting node in beginning
+{
+    int value;
+    cout<<"Enter the value to be inserted: ";
+    cin>>value;
+    node *temp, *p;
+
+    temp = create_node(value);
+
+    if (start == NULL)                  //when there are no elements in the linked list
+    {
+        start = temp;                  // now the temp is first element
+        start->next = NULL;          
+    } 
+
+    else
+    {
+        p = start;                           /*the newly created temp is the start
+        start = temp;                         and the previous start is now the second element*/
+        start->next = p;                     
+    }
+
+    cout<<"Element Inserted at beginning"<<endl;
+}
+
+ 
+
+void single_llist::insert_last()   //for inserting node at last
+{
+    int value;
+    cout<<"Enter the value to be inserted: ";
+    cin>>value;
+    node *temp, *s;
+
+    temp = create_node(value);
+    s = start;
+
+    while (s->next != NULL)   // checking for the last node, we are going through the entire stack
+    {                        
+        s = s->next;          
+    }
+
+    temp->next = NULL;                        
+    s->next = temp;                           // the last node is made secondlast and the new node inserted in the last
+    cout<<"Element Inserted at last"<<endl;  
+}
+
+
+void single_llist::insert_pos()  //for innsertion of node at a given position i.e neither first or last
+{
+    int value, pos, counter = 0; 
+    cout<<"Enter the value to be inserted: ";
+    cin>>value;
+    node *temp, *s, *ptr;
+    temp = create_node(value);
+    cout<<"Enter the postion at which node to be inserted: ";
+    cin>>pos;
+    int i;
+    s = start;
+
+    while (s != NULL)          //finding total number of nodes
+    {
+        s = s->next;
+        counter++;
+    }
+
+    if (pos == 1)          // if the first position i. e start we insert in the beginning   
+    {
+        if (start == NULL)
+        {
+            start = temp;
+            start->next = NULL;            //same as inserting at the beginning function done before
+        }
+        else                        
+        {
+            ptr = start;
+            start = temp;
+            start->next = ptr;
+        }
+    }
+
+    else if (pos > 1  && pos <= counter) // not first - in middle or last
+    {
+        s = start;                          
+        for (i = 1; i < pos; i++)           
+        {
+            ptr = s;  /// the end of the  loop the ptr points to one the position before the pos value
+            s = s->next;                    
+        }                                   
+        ptr->next = temp;                   //insert the given node to the position
+        temp->next = s;                     //the next positon again points to the next element which is after the pos position
+    }
+
+    else                                        //in case pos value is greater than the total no of elements in linked list
+    {                                          
+        cout<<"Positon out of range"<<endl;
+    }
+}
+
+
+
+void single_llist::sort()  //sorting of linked list
+{
+    node *ptr, *s;
+    int value;
+    if (start == NULL)                             //in case list is empty
+    {
+        cout<<"The List is empty"<<endl;
+        return;
+    }
+    ptr = start;                                       
+    while (ptr != NULL)                            
+    {                                              
+        for (s = ptr->next; s!=NULL; s = s->next)
+        {
+            if (ptr->info > s->info)  // bubble  sort
+            {
+                value = ptr->info;
+                ptr->info = s->info;
+                s->info = value;
+            }
+        }
+        ptr = ptr->next;
+    }
+}
+
+
+
+void single_llist::delete_pos()// deletion of an element at  a particular position
+{
+    int pos, i, counter = 0;
+    if (start == NULL) // if list empty
+    {
+        cout<<"List is empty"<<endl;
+        return;
+    }
+    cout<<"Enter the position of value to be deleted: ";
+    cin>>pos;
+    node *s, *ptr;
+    s = start;
+    if (pos == 1)
+    {
+        start = s->next;         //if the postion is firt then start is deleted
+    }
+
+    else
+    {
+        while (s != NULL)         //finding total number of nodes
+        {
+            s = s->next;
+            counter++;  
+        }
+
+        if (pos > 0 && pos <= counter)
+        {
+            s = start;
+            for (i = 1;i < pos;i++)
+            {
+                ptr = s;                    
+                s = s->next;               // ptr one element before the pos
+            }
+            ptr->next = s->next;           //ptr is made to point to the next node of s bypassing the deleted element
+            free(s);                       
+        }                                   
+
+        else
+        {
+            cout<<"Position out of range"<<endl;
+        }
+                                  
+        cout<<"Element Deleted"<<endl;     
+    }
+}
+
+
+
+void single_llist::update()  // updating an element
+{
+    int value, pos, i;
+    if (start == NULL)
+    {
+        cout<<"List is empty"<<endl;
+        return;
+    }
+    cout<<"Enter the node postion to be updated: ";
+    cin>>pos;
+    cout<<"Enter the new value: ";
+    cin>>value;
+    node *s, *ptr;
+    s = start;
+
+    if (pos == 1)
+    {
+        start->info = value;   // if pos is 1 the start value is updated
+    }
+
+    else
+    {
+        for (i = 1;i<pos;i++)
+        {
+            if (s == NULL)
+            {
+                cout<<"There are less than "<<pos<<" elements";  // if pos greater than the number of elements in linked list
+                return;                                          
+            }
+            s = s->next;
+        }
+        s->info = value;                                  //change value of s to the new value desired
+    }
+    cout<<"Node Updated"<<endl;
+} 
+
+void single_llist::search() // searching for an element
+{
+    int value, pos = 0;
+    bool flag = false;
+    if (start == NULL)
+    {
+        cout<<"List is empty"<<endl;            //Make sure list is not empty
+        return;
+    }
+    cout<<"Enter the value to be searched: ";
+    cin>>value;
+    node *s;
+    s = start;
+    while (s != NULL)
+    {
+        pos++;
+        if (s->info == value)           //Check if value is equal to the value given in s
+        {
+            flag = true;
+            cout<<"Element "<<value<<" is found at position "<<pos<<endl;  // displaying the position where it is found
+        }
+        s = s->next;
+    }
+    if (!flag)
+        cout<<"Element "<<value<<" not found in the list"<<endl;  // if element not found
+}
+
+
+void single_llist::reverse()  // reversing the linked list          
+{
+   node *ptr1, *ptr2, *ptr3;
+
+   if (start == NULL)
+    {
+        cout<<"List is empty"<<endl;
+        return;
+    }
+
+    if (start->next == NULL) // only one element
+    {
+        return;
+    }  
+
+    ptr1 = start;                 
+    ptr2 = ptr1->next;            /*now ptr 3 <-ptr 2 -> ptr 1-> null */
+    ptr3 = ptr2->next;            
+    ptr1->next = NULL;            
+    ptr2->next = ptr1;             
+
+    while (ptr3 != NULL)         
+    {
+        ptr1 = ptr2;             
+        ptr2 = ptr3;             //till ptr3 is null, we reverse ptr 2-> ptr 1and then move ptr 2 to ptr 3 i. e one step forward and repeat it each time 
+        ptr3 = ptr3->next;
+        ptr2->next = ptr1;         
+    }
+    start = ptr2;                 
+    start ->next =ptr1;          
+}                                 //last element called start
+
+
+void single_llist::display() //display the eleents of linked list
+{
+    node *temp;
+
+    if (start == NULL)
+    {
+        cout<<"The List is Empty"<<endl;   // if there are no nodes
+        return;
+    }
+
+    temp = start;                         
+    cout<<"Elements of list are: "<<endl;      
+    while (temp != NULL)  // display each element
+    {
+        cout<<temp->info<<"->";   
+        temp = temp->next;        
+    }
+    cout<<"NULL"<<endl;           //for end of list
+}    
